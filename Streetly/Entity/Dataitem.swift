@@ -14,13 +14,13 @@ class DataItem: Identifiable {
     var lon: Double
     var lat: Double
     var time: Date
-    var cartype: String
+    @Relationship() var vehicle: Vehicle?
 
-    init(lon: Double, lat: Double, car: String) {
+    init(lon: Double, lat: Double, vehicle: Vehicle?) {
         self.id = UUID().uuidString
         self.lon = lon
         self.lat = lat
-        self.cartype = car
+        self.vehicle = vehicle
         self.time = Date()
     }
 }

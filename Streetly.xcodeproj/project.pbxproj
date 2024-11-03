@@ -3,32 +3,28 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D494E692CD7BC1100B4D4EB /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D494E682CD7BC1100B4D4EB /* Vehicle.swift */; };
-		4D494E6B2CD7BC7400B4D4EB /* VehicleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D494E6A2CD7BC7400B4D4EB /* VehicleSelectionView.swift */; };
 		4DEBA5CE2C5A4B0700B9432D /* StreetlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEBA5CD2C5A4B0700B9432D /* StreetlyApp.swift */; };
-		4DEBA5D02C5A4B0700B9432D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEBA5CF2C5A4B0700B9432D /* ContentView.swift */; };
 		4DEBA5D22C5A4B0900B9432D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DEBA5D12C5A4B0900B9432D /* Assets.xcassets */; };
 		4DEBA5D52C5A4B0900B9432D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DEBA5D42C5A4B0900B9432D /* Preview Assets.xcassets */; };
-		4DEBA5DD2C5A7EFA00B9432D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEBA5DC2C5A7EF900B9432D /* LocationManager.swift */; };
-		4DEBA5DF2C5A81E200B9432D /* Dataitem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEBA5DE2C5A81E200B9432D /* Dataitem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4D494E682CD7BC1100B4D4EB /* Vehicle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
-		4D494E6A2CD7BC7400B4D4EB /* VehicleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleSelectionView.swift; sourceTree = "<group>"; };
 		4DEBA5CA2C5A4B0700B9432D /* Streetly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Streetly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEBA5CD2C5A4B0700B9432D /* StreetlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreetlyApp.swift; sourceTree = "<group>"; };
-		4DEBA5CF2C5A4B0700B9432D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4DEBA5D12C5A4B0900B9432D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4DEBA5D42C5A4B0900B9432D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4DEBA5DB2C5A4B5200B9432D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		4DEBA5DC2C5A7EF900B9432D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
-		4DEBA5DE2C5A81E200B9432D /* Dataitem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dataitem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4D494E6F2CD7CC0A00B4D4EB /* Entity */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Entity; sourceTree = "<group>"; };
+		4D494E702CD7CC1B00B4D4EB /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+		4D494E712CD7CC2C00B4D4EB /* Services */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Services; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4DEBA5C72C5A4B0700B9432D /* Frameworks */ = {
@@ -60,15 +56,13 @@
 		4DEBA5CC2C5A4B0700B9432D /* Streetly */ = {
 			isa = PBXGroup;
 			children = (
-				4D494E6A2CD7BC7400B4D4EB /* VehicleSelectionView.swift */,
-				4D494E682CD7BC1100B4D4EB /* Vehicle.swift */,
+				4D494E712CD7CC2C00B4D4EB /* Services */,
+				4D494E702CD7CC1B00B4D4EB /* Views */,
+				4D494E6F2CD7CC0A00B4D4EB /* Entity */,
 				4DEBA5DB2C5A4B5200B9432D /* Info.plist */,
-				4DEBA5DC2C5A7EF900B9432D /* LocationManager.swift */,
 				4DEBA5CD2C5A4B0700B9432D /* StreetlyApp.swift */,
-				4DEBA5CF2C5A4B0700B9432D /* ContentView.swift */,
 				4DEBA5D12C5A4B0900B9432D /* Assets.xcassets */,
 				4DEBA5D32C5A4B0900B9432D /* Preview Content */,
-				4DEBA5DE2C5A81E200B9432D /* Dataitem.swift */,
 			);
 			path = Streetly;
 			sourceTree = "<group>";
@@ -95,6 +89,11 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4D494E6F2CD7CC0A00B4D4EB /* Entity */,
+				4D494E702CD7CC1B00B4D4EB /* Views */,
+				4D494E712CD7CC2C00B4D4EB /* Services */,
 			);
 			name = Streetly;
 			productName = Streetly;
@@ -151,12 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DEBA5D02C5A4B0700B9432D /* ContentView.swift in Sources */,
 				4DEBA5CE2C5A4B0700B9432D /* StreetlyApp.swift in Sources */,
-				4DEBA5DF2C5A81E200B9432D /* Dataitem.swift in Sources */,
-				4D494E692CD7BC1100B4D4EB /* Vehicle.swift in Sources */,
-				4D494E6B2CD7BC7400B4D4EB /* VehicleSelectionView.swift in Sources */,
-				4DEBA5DD2C5A7EFA00B9432D /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
