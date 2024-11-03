@@ -10,12 +10,11 @@ import MapKit
 import SwiftData  // Imported SwiftData
 
 struct ContentView: View {
-    let school = CLLocationCoordinate2D(latitude: 48.1857, longitude: 16.3567)
     @ObservedObject var locationManager = LocationManager()
     @State private var camera: MapCameraPosition = .userLocation(fallback: .automatic)
     @State public var driving: Bool = false
     @Environment(\.modelContext) private var context
-    @Query(sort: \DataItem.time) var dataItems: [DataItem]  // Specified root type in key path
+    @Query(sort: \DataItem.time) var dataItems: [DataItem]
 
     var body: some View {
         // Group dataItems into trips
@@ -75,7 +74,7 @@ struct ContentView: View {
     func groupDataItemsIntoTrips(dataItems: [DataItem]) -> [[DataItem]] {
         var trips: [[DataItem]] = []
         var currentTrip: [DataItem] = []
-        let timeThreshold: TimeInterval = 2 * 60  // 2 minutes in seconds
+        let timeThreshold: TimeInterval = 1 * 60  // 1 minutes in seconds
         
         for (index, item) in dataItems.enumerated() {
             if index == 0 {
