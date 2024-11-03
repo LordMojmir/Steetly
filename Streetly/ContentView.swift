@@ -15,7 +15,10 @@ struct ContentView: View {
     @State private var camera: MapCameraPosition = .userLocation(fallback: .automatic)
     @State public var driving: Bool = false
     @Environment(\.modelContext) private var context
-    @Query var dataItems: [DataItem]  // Added @Query to fetch DataItems
+    @Query var dataItems: [DataItem] 
+    @State private var showingVehicleSheet = false
+    @State private var selectedVehicle: Vehicle?
+    @Query private var vehicles: [Vehicle]
 
     var body: some View {
         Map(position: $camera) {
@@ -28,28 +31,42 @@ struct ContentView: View {
             }
         }
         .onReceive(locationManager.$currentLocation) { location in
-            if driving, let location = location {
+            if driving, let location = location, let vehicle = selectedVehicle {
                 // Save a new DataItem when driving and location updates
-                let newItem = DataItem(lon: location.longitude, lat: location.latitude, car: "Porsche 991 4s")
+                let newItem = DataItem(lon: location.longitude, lat: location.latitude, car: vehicle.type)
                 context.insert(newItem)
-                print("Saved DataItem at \(location.latitude), \(location.longitude)")
+                print("Saved DataItem at \(location.latitude), \(location.longitude) with vehicle \(vehicle.name)")
+            } else if driving {
+                // If no vehicle selected, prompt user
+                print("No vehicle selected")
             }
         }
         .safeAreaInset(edge: .bottom) {
             HStack {
                 Spacer()
                 Button(action: {
-                    driving.toggle()
-                    print(driving ? "Start button pressed" : "Stop button pressed")
+                    if driving {
+                        driving = false
+                        print("Trip stopped")
+                    } else {
+                        if selectedVehicle == nil {
+                            showingVehicleSheet = true
+                        } else {
+                            driving = true
+                            print("Trip started")
+                        }
+                    }
                 }) {
                     Text(driving ? "Stop" : "Start")
                 }
                 Spacer()
                 Button(action: {
-                    // Implement car changing functionality here
-                    print("Change Car")
+                    showingVehicleSheet = true
                 }) {
-                    Text("Change Car")
+                    Text(selectedVehicle?.name ?? "Select Vehicle")
+                }
+                .sheet(isPresented: $showingVehicleSheet) {
+                    VehicleSelectionView(selectedVehicle: $selectedVehicle)
                 }
                 Spacer()
             }

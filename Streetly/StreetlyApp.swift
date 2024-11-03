@@ -14,6 +14,6 @@ struct StreetlyApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: DataItem.self)
+        .modelContainer(for: [DataItem.self, Vehicle.self]) 
     }
 }
