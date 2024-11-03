@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import SwiftData  // Imported SwiftData
 
 struct ContentView: View {
     let school = CLLocationCoordinate2D(latitude: 48.1857, longitude: 16.3567)
@@ -14,39 +15,42 @@ struct ContentView: View {
     @State private var camera: MapCameraPosition = .userLocation(fallback: .automatic)
     @State public var driving: Bool = false
     @Environment(\.modelContext) private var context
-    
+    @Query var dataItems: [DataItem]  // Added @Query to fetch DataItems
+
     var body: some View {
         Map(position: $camera) {
-            if let userLocation = locationManager.currentLocation { 
-                
+            if let userLocation = locationManager.currentLocation {
+                // You can add user location marker here if needed
             }
-//            Marker("HTL Spengergasse", systemImage: "graduationcap.circle", coordinate: school).tint(.blue)
+            // Display stored data points as markers on the map
+            ForEach(dataItems) { item in
+                Marker("", coordinate: CLLocationCoordinate2D(latitude: item.lat, longitude: item.lon))
+            }
+        }
+        .onReceive(locationManager.$currentLocation) { location in
+            if driving, let location = location {
+                // Save a new DataItem when driving and location updates
+                let newItem = DataItem(lon: location.longitude, lat: location.latitude, car: "Porsche 991 4s")
+                context.insert(newItem)
+                print("Saved DataItem at \(location.latitude), \(location.longitude)")
+            }
         }
         .safeAreaInset(edge: .bottom) {
             HStack {
                 Spacer()
-                if driving{
-                    Button(action: {
-                        driving = false
-                        print("Start button pressed")
-                    }) {
-                        Text("Stop")
-                    }
-                }else{
-                    Button(action: {
-                        driving = true
-                        print("Start button pressed")
-                    }) {
-                        Text("Start")
-                    }
+                Button(action: {
+                    driving.toggle()
+                    print(driving ? "Start button pressed" : "Stop button pressed")
+                }) {
+                    Text(driving ? "Stop" : "Start")
                 }
                 Spacer()
                 Button(action: {
-                    // has to be implemented
+                    // Implement car changing functionality here
                     print("Change Car")
-                }, label: {
+                }) {
                     Text("Change Car")
-                })
+                }
                 Spacer()
             }
             .padding(.top)
@@ -57,25 +61,8 @@ struct ContentView: View {
             MapPitchToggle()
         }
         .mapStyle(.standard(elevation: .realistic))
-        
-        //    func addGeoItem(){
-        //        let item = DataItem(47.0, 16.923)
-        //
-        //        context.insert(item)
-        //    }
-    }
-
-    
-    func addItem (){
-        print("Item added")
-        context.insert(DataItem(lon: 5.3, lat: 10.3, car: "Porsche 991 4s"))
-    }
-    func addItem (_ item : DataItem ){
-        context.insert(item)
     }
 }
-
-
 
 #Preview {
     ContentView()
