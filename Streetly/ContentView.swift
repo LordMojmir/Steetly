@@ -15,58 +15,49 @@ struct ContentView: View {
     @State private var camera: MapCameraPosition = .userLocation(fallback: .automatic)
     @State public var driving: Bool = false
     @Environment(\.modelContext) private var context
-    @Query var dataItems: [DataItem] 
-    @State private var showingVehicleSheet = false
-    @State private var selectedVehicle: Vehicle?
-    @Query private var vehicles: [Vehicle]
+    @Query(sort: \DataItem.time) var dataItems: [DataItem]  // Specified root type in key path
 
     var body: some View {
+        // Group dataItems into trips
+        let trips = groupDataItemsIntoTrips(dataItems: dataItems)
+        
         Map(position: $camera) {
             if let userLocation = locationManager.currentLocation {
-                // You can add user location marker here if needed
+                // Optionally, display the user's current location
+                UserAnnotation()
             }
-            // Display stored data points as markers on the map
-            ForEach(dataItems) { item in
-                Marker("", coordinate: CLLocationCoordinate2D(latitude: item.lat, longitude: item.lon))
+            // Display polylines for each trip
+            ForEach(trips.indices, id: \.self) { index in
+                let tripCoordinates = trips[index].map { CLLocationCoordinate2D(latitude: $0.lat, longitude: $0.lon) }
+                if tripCoordinates.count > 1 {
+                    MapPolyline(coordinates: tripCoordinates)
+                        .stroke(Color.blue, lineWidth: 5)
+                }
             }
         }
         .onReceive(locationManager.$currentLocation) { location in
-            if driving, let location = location, let vehicle = selectedVehicle {
+            if driving, let location = location {
                 // Save a new DataItem when driving and location updates
-                let newItem = DataItem(lon: location.longitude, lat: location.latitude, car: vehicle.type)
+                let newItem = DataItem(lon: location.longitude, lat: location.latitude, car: "Porsche 991 4s")
                 context.insert(newItem)
-                print("Saved DataItem at \(location.latitude), \(location.longitude) with vehicle \(vehicle.name)")
-            } else if driving {
-                // If no vehicle selected, prompt user
-                print("No vehicle selected")
+                print("Saved DataItem at \(location.latitude), \(location.longitude)")
             }
         }
         .safeAreaInset(edge: .bottom) {
             HStack {
                 Spacer()
                 Button(action: {
-                    if driving {
-                        driving = false
-                        print("Trip stopped")
-                    } else {
-                        if selectedVehicle == nil {
-                            showingVehicleSheet = true
-                        } else {
-                            driving = true
-                            print("Trip started")
-                        }
-                    }
+                    driving.toggle()
+                    print(driving ? "Start button pressed" : "Stop button pressed")
                 }) {
                     Text(driving ? "Stop" : "Start")
                 }
                 Spacer()
                 Button(action: {
-                    showingVehicleSheet = true
+                    // Implement car changing functionality here
+                    print("Change Car")
                 }) {
-                    Text(selectedVehicle?.name ?? "Select Vehicle")
-                }
-                .sheet(isPresented: $showingVehicleSheet) {
-                    VehicleSelectionView(selectedVehicle: $selectedVehicle)
+                    Text("Change Car")
                 }
                 Spacer()
             }
@@ -78,6 +69,34 @@ struct ContentView: View {
             MapPitchToggle()
         }
         .mapStyle(.standard(elevation: .realistic))
+    }
+    
+    // Function to group dataItems into trips
+    func groupDataItemsIntoTrips(dataItems: [DataItem]) -> [[DataItem]] {
+        var trips: [[DataItem]] = []
+        var currentTrip: [DataItem] = []
+        let timeThreshold: TimeInterval = 2 * 60  // 2 minutes in seconds
+        
+        for (index, item) in dataItems.enumerated() {
+            if index == 0 {
+                currentTrip.append(item)
+                continue
+            }
+            let previousItem = dataItems[index - 1]
+            let timeDifference = item.time.timeIntervalSince(previousItem.time)
+            if timeDifference > timeThreshold {
+                // Time difference exceeds threshold, start a new trip
+                trips.append(currentTrip)
+                currentTrip = [item]
+            } else {
+                currentTrip.append(item)
+            }
+        }
+        // Add the last trip
+        if !currentTrip.isEmpty {
+            trips.append(currentTrip)
+        }
+        return trips
     }
 }
 
